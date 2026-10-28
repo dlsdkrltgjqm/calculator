@@ -1,0 +1,347 @@
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --key: #334155;
+  --key-hover: #475569;
+  --op: #f59e0b;
+  --op-hover: #fbbf24;
+  --equals: #22c55e;
+  --equals-hover: #4ade80;
+  --func: #475569;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --card: #0b1220;
+  --card-hover: #111c33;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 760px;
+}
+
+/* ===== 탭 ===== */
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--panel);
+  padding: 6px;
+  border-radius: 12px;
+}
+.tab {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { background: var(--key); color: var(--text); }
+
+/* ===== 뷰 ===== */
+.view { display: none; width: 100%; }
+.view.active { display: block; }
+.calc-wrap, .projects-wrap {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ===== 계산기 ===== */
+.calculator {
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.display {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin-bottom: 16px;
+  text-align: right;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.expression { color: var(--muted); font-size: 16px; min-height: 22px; word-break: break-all; }
+.result { font-size: 40px; font-weight: 600; word-break: break-all; }
+.keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.key {
+  border: none; border-radius: 12px; padding: 18px 0;
+  font-size: 20px; font-weight: 500; color: var(--text);
+  background: var(--key); cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+.key:hover { background: var(--key-hover); }
+.key:active { transform: scale(0.96); }
+.key.func { background: var(--func); color: var(--muted); }
+.key.op { background: var(--op); color: #1a1200; }
+.key.op:hover { background: var(--op-hover); }
+.key.equals { background: var(--equals); color: #06230f; }
+.key.equals:hover { background: var(--equals-hover); }
+.key.zero { grid-column: span 2; }
+
+/* ===== 패널 공통 (계산 내역 / 프로젝트) ===== */
+.history, .projects-panel, .project-detail {
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.history { width: 360px; max-height: 520px; display: flex; flex-direction: column; }
+.projects-panel { width: 280px; max-height: 560px; display: flex; flex-direction: column; }
+.project-detail { width: 420px; max-height: 560px; overflow-y: auto; }
+
+.history-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.history-header h2 { font-size: 18px; }
+.history-buttons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+.assign-project {
+  border: none; background: var(--key); color: var(--text);
+  cursor: pointer; font-size: 13px; padding: 5px 10px; border-radius: 6px;
+  transition: background 0.15s, opacity 0.15s;
+}
+.assign-project:hover:not(:disabled) { background: var(--op); color: #1a1200; }
+.assign-project:disabled { opacity: 0.4; cursor: default; }
+
+.select-delete {
+  border: none; background: var(--key); color: var(--text);
+  cursor: pointer; font-size: 13px; padding: 5px 10px; border-radius: 6px;
+  transition: background 0.15s, opacity 0.15s;
+}
+.select-delete:hover:not(:disabled) { background: #7f1d1d; color: #fecaca; }
+.select-delete:disabled { opacity: 0.4; cursor: default; }
+
+.clear-history {
+  border: none; background: transparent; color: var(--muted);
+  cursor: pointer; font-size: 13px;
+}
+.clear-history:hover { color: var(--text); text-decoration: underline; }
+
+/* ===== 인라인 패널 (프로젝트 담기 / 새 프로젝트) ===== */
+.inline-panel {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel-label { font-size: 12px; color: var(--muted); }
+.panel-select, .panel-input {
+  width: 100%; padding: 8px; border-radius: 8px;
+  border: 1px solid var(--key-hover); background: var(--panel);
+  color: var(--text); font-size: 14px; font-family: inherit;
+}
+.panel-select:focus, .panel-input:focus { outline: none; border-color: var(--op); }
+.panel-actions { display: flex; gap: 8px; }
+.btn-primary {
+  border: none; background: var(--equals); color: #06230f;
+  padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
+}
+.btn-primary:hover { background: var(--equals-hover); }
+.btn-ghost {
+  border: none; background: var(--key); color: var(--muted);
+  padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 13px;
+}
+.btn-ghost:hover { background: var(--key-hover); color: var(--text); }
+
+/* ===== 계산 내역 리스트 ===== */
+.history-list, .project-list { list-style: none; overflow-y: auto; flex: 1; }
+.history-list li, .project-list li {
+  padding: 10px 12px; border-radius: 10px; margin-bottom: 8px;
+  background: var(--card); transition: background 0.15s;
+}
+.history-list li.empty, .project-list li.empty {
+  color: var(--muted); text-align: center; background: transparent; font-size: 14px;
+}
+
+.h-row { display: flex; align-items: flex-start; gap: 10px; }
+.h-check {
+  margin-top: 4px; width: 16px; height: 16px;
+  accent-color: var(--op); cursor: pointer; flex-shrink: 0;
+}
+.h-main { flex: 1; cursor: pointer; border-radius: 8px; padding: 2px 4px; margin: -2px -4px; }
+.h-main:hover { background: var(--card-hover); }
+.h-expr { color: var(--muted); font-size: 13px; }
+.h-res { font-size: 18px; font-weight: 600; }
+.h-proj {
+  display: inline-block; margin-top: 6px; font-size: 11px;
+  color: var(--op); background: rgba(245, 158, 11, 0.12);
+  padding: 2px 8px; border-radius: 10px;
+}
+
+/* 메모 */
+.h-note {
+  margin-top: 8px; padding: 6px 10px;
+  background: rgba(245, 158, 11, 0.12); border-left: 3px solid var(--op);
+  border-radius: 6px; font-size: 13px; color: var(--text);
+  white-space: pre-wrap; word-break: break-word;
+}
+.h-actions { display: flex; gap: 8px; margin-top: 8px; }
+.h-actions button {
+  border: none; background: var(--key); color: var(--muted);
+  font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.h-actions .note-btn:hover { background: var(--key-hover); color: var(--text); }
+.h-actions .note-del:hover { background: #7f1d1d; color: #fecaca; }
+
+.note-edit { margin-top: 8px; }
+.note-input {
+  width: 100%; resize: vertical; border: 1px solid var(--key-hover);
+  background: var(--card); color: var(--text); border-radius: 8px;
+  padding: 8px; font-family: inherit; font-size: 13px;
+}
+.note-input:focus { outline: none; border-color: var(--op); }
+.note-edit-actions { display: flex; gap: 8px; margin-top: 6px; }
+.note-edit-actions button, .url-edit-actions button {
+  border: none; font-size: 12px; padding: 5px 12px; border-radius: 6px; cursor: pointer;
+}
+.note-save { background: var(--equals); color: #06230f; }
+.note-save:hover { background: var(--equals-hover); }
+.note-cancel { background: var(--key); color: var(--muted); }
+.note-cancel:hover { background: var(--key-hover); color: var(--text); }
+
+/* ===== 프로젝트 리스트 ===== */
+.project-item { cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+.project-item:hover { background: var(--card-hover); }
+.project-item.active { background: var(--card-hover); border-left: 3px solid var(--op); }
+.p-title { font-size: 15px; font-weight: 600; }
+.p-count { font-size: 12px; color: var(--muted); }
+
+/* ===== 프로젝트 상세 ===== */
+.project-detail .empty { color: var(--muted); text-align: center; padding: 40px 0; }
+.pd-header {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--key);
+}
+.pd-title {
+  flex: 1; font-size: 18px; font-weight: 700;
+  background: var(--card); color: var(--text);
+  border: 1px solid transparent; border-radius: 8px; padding: 8px 10px; font-family: inherit;
+}
+.pd-title:hover { border-color: var(--key-hover); }
+.pd-title:focus { outline: none; border-color: var(--op); }
+.pd-delete {
+  border: none; background: var(--key); color: var(--muted);
+  font-size: 12px; padding: 7px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+}
+.pd-delete:hover { background: #7f1d1d; color: #fecaca; }
+
+.pd-section { margin-bottom: 22px; }
+.pd-section h3 { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+.pd-empty { font-size: 13px; color: var(--muted); padding: 6px 2px; }
+
+.pd-entry { background: var(--card); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+.pd-entry-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.pd-remove {
+  border: none; background: var(--key); color: var(--muted);
+  font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer; white-space: nowrap;
+}
+.pd-remove:hover { background: #7f1d1d; color: #fecaca; }
+
+/* ===== URL ===== */
+.url-row {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.url-link { flex: 1; color: var(--op); font-size: 13px; word-break: break-all; text-decoration: none; min-width: 120px; }
+a.url-link:hover { text-decoration: underline; }
+.url-actions, .url-edit-actions { display: flex; gap: 6px; }
+.url-actions button {
+  border: none; background: var(--key); color: var(--muted);
+  font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer;
+}
+.url-edit:hover { background: var(--key-hover); color: var(--text); }
+.url-del:hover { background: #7f1d1d; color: #fecaca; }
+
+.url-label-input, .url-input {
+  padding: 7px 9px; border-radius: 7px; border: 1px solid var(--key-hover);
+  background: var(--panel); color: var(--text); font-size: 13px; font-family: inherit;
+}
+.url-label-input { width: 110px; }
+.url-input { flex: 1; min-width: 140px; }
+.url-label-input:focus, .url-input:focus { outline: none; border-color: var(--op); }
+
+.url-add {
+  display: flex; gap: 8px; margin-top: 10px; padding-top: 12px;
+  border-top: 1px dashed var(--key); flex-wrap: wrap;
+}
+
+/* ===== 계산 내역별 URL ===== */
+.entry-urls { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.entry-urls .url-row { background: rgba(148, 163, 184, 0.1); margin-bottom: 0; }
+.entry-urls .entry-url-add {
+  border-top: none; margin-top: 0; padding-top: 0;
+}
+.url-add-btn {
+  align-self: flex-start;
+  border: none; background: var(--key); color: var(--muted);
+  font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.url-add-btn:hover { background: var(--op); color: #1a1200; }
+
+/* ===== 모바일 반응형 ===== */
+@media (max-width: 700px) {
+  body { padding: 12px; }
+  .app { max-width: 100%; gap: 12px; }
+  .calc-wrap, .projects-wrap { gap: 12px; }
+
+  .calculator { width: 100%; max-width: 420px; margin: 0 auto; }
+  .history { width: 100%; max-width: 480px; max-height: 58vh; }
+  .projects-panel { width: 100%; max-width: 480px; max-height: none; }
+  .project-detail { width: 100%; max-width: 480px; max-height: none; }
+
+  .result { font-size: 34px; }
+  .key { padding: 20px 0; font-size: 19px; } /* 터치 영역 확보 */
+
+  /* URL 입력칸이 좁은 화면에서 한 줄씩 쌓이도록 */
+  .url-label-input, .url-input { width: 100%; flex: 1 1 100%; min-width: 0; }
+  .url-row, .url-add, .entry-urls .url-row { flex-wrap: wrap; }
+}
+
+/* 아주 좁은 화면 */
+@media (max-width: 380px) {
+  .tab { padding: 8px 16px; font-size: 14px; }
+  .history-buttons { width: 100%; }
+}
+
+/* 노치/하단 홈바 안전영역 (standalone 설치 시) */
+@media (display-mode: standalone) {
+  body {
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}

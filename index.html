@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>계산기</title>
+  <meta name="description" content="계산 내역과 프로젝트를 기록하는 계산기" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="manifest" href="manifest.json" />
+  <!-- iOS 홈화면 앱 설정 -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="계산기" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <nav class="tabs">
+      <button class="tab active" data-view="calc">계산기</button>
+      <button class="tab" data-view="projects">프로젝트</button>
+    </nav>
+
+    <!-- ========== 계산기 뷰 ========== -->
+    <div id="view-calc" class="view active">
+      <div class="calc-wrap">
+        <section class="calculator">
+          <div class="display">
+            <div class="expression" id="expression"></div>
+            <div class="result" id="result">0</div>
+          </div>
+          <div class="keys">
+            <button class="key func" data-action="clear">AC</button>
+            <button class="key func" data-action="back">⌫</button>
+            <button class="key func" data-value="%">%</button>
+            <button class="key op" data-value="/">÷</button>
+
+            <button class="key" data-value="7">7</button>
+            <button class="key" data-value="8">8</button>
+            <button class="key" data-value="9">9</button>
+            <button class="key op" data-value="*">×</button>
+
+            <button class="key" data-value="4">4</button>
+            <button class="key" data-value="5">5</button>
+            <button class="key" data-value="6">6</button>
+            <button class="key op" data-value="-">−</button>
+
+            <button class="key" data-value="1">1</button>
+            <button class="key" data-value="2">2</button>
+            <button class="key" data-value="3">3</button>
+            <button class="key op" data-value="+">+</button>
+
+            <button class="key zero" data-value="0">0</button>
+            <button class="key" data-value=".">.</button>
+            <button class="key equals" data-action="equals">=</button>
+          </div>
+        </section>
+
+        <section class="history">
+          <div class="history-header">
+            <h2>계산 내역</h2>
+            <div class="history-buttons">
+              <button id="assignProject" class="assign-project">프로젝트에 추가</button>
+              <button id="deleteSelected" class="select-delete">선택 삭제</button>
+              <button id="clearHistory" class="clear-history">전체 삭제</button>
+            </div>
+          </div>
+
+          <div id="assignPanel" class="inline-panel" hidden>
+            <label class="panel-label">선택한 내역을 담을 프로젝트</label>
+            <select id="assignSelect" class="panel-select"></select>
+            <input id="assignNewTitle" class="panel-input" placeholder="새 프로젝트 제목" />
+            <div class="panel-actions">
+              <button id="assignConfirm" class="btn-primary">추가</button>
+              <button id="assignCancel" class="btn-ghost">취소</button>
+            </div>
+          </div>
+
+          <ul id="historyList" class="history-list">
+            <li class="empty">아직 계산 내역이 없습니다.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <!-- ========== 프로젝트 뷰 ========== -->
+    <div id="view-projects" class="view">
+      <div class="projects-wrap">
+        <section class="projects-panel">
+          <div class="history-header">
+            <h2>프로젝트</h2>
+            <button id="newProjectBtn" class="assign-project">새 프로젝트</button>
+          </div>
+          <div id="newProjectPanel" class="inline-panel" hidden>
+            <label class="panel-label">프로젝트 제목</label>
+            <input id="newProjectTitle" class="panel-input" placeholder="예: 10월 가계부" />
+            <div class="panel-actions">
+              <button id="createProject" class="btn-primary">추가</button>
+              <button id="cancelProject" class="btn-ghost">취소</button>
+            </div>
+          </div>
+          <ul id="projectList" class="project-list"></ul>
+        </section>
+
+        <section id="projectDetail" class="project-detail">
+          <p class="empty">프로젝트를 선택하세요.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

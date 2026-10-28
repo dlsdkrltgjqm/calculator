@@ -1,0 +1,6 @@
+# 배포용 zip (Netlify Drop 용, 저장소엔 불필요)
+calculator-deploy.zip
+
+# OS
+.DS_Store
+Thumbs.db
