@@ -1,7 +1,7 @@
 {
-  "name": "계산기 - 내역·프로젝트",
-  "short_name": "계산기",
-  "description": "계산 내역과 프로젝트를 기록하는 계산기",
+  "name": "단가 계산기",
+  "short_name": "단가 계산기",
+  "description": "계산 내역과 프로젝트를 기록하는 단가 계산기",
   "lang": "ko",
   "start_url": "./index.html",
   "scope": "./",

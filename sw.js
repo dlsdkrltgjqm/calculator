@@ -1,5 +1,5 @@
 // 앱 셸 캐시 (오프라인 지원). 데이터는 IndexedDB에 저장되므로 캐시 대상이 아님.
-const CACHE = "calc-app-v1";
+const CACHE = "calc-app-v2";
 const ASSETS = [
   "./",
   "./index.html",
