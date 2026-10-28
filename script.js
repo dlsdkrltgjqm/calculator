@@ -85,7 +85,10 @@ function tryEvaluate(expr) {
   if (!expr) return null;
   if (!/^[0-9+\-*/.%\s]+$/.test(expr)) return null;
   try {
-    const safe = expr.replace(/%/g, "/100");
+    // % → /100, 그리고 숫자 앞자리 0 제거 (010이 8진수로 계산되는 문제 방지)
+    const safe = expr
+      .replace(/%/g, "/100")
+      .replace(/(^|[^\d.])0+(\d)/g, "$1$2");
     const value = Function("return (" + safe + ")")();
     if (typeof value !== "number" || !isFinite(value)) return null;
     return value;
