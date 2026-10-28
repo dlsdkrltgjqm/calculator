@@ -753,6 +753,12 @@ init();
 
 // ===== PWA 서비스 워커 등록 (홈화면 설치·오프라인) =====
 if ("serviceWorker" in navigator) {
+  // 새 버전이 활성화되면 한 번 자동 새로고침 (첫 방문 제외)
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (hadController && !reloaded) { reloaded = true; window.location.reload(); }
+  });
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js").catch((e) => console.warn("SW 등록 실패", e));
   });

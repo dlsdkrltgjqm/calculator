@@ -1,5 +1,6 @@
-// 앱 셸 캐시 (오프라인 지원). 데이터는 IndexedDB에 저장되므로 캐시 대상이 아님.
-const CACHE = "calc-app-v3";
+// 앱 셸 캐시. 데이터는 IndexedDB에 저장되므로 캐시 대상이 아님.
+// 전략: 네트워크 우선(online이면 항상 최신) + 오프라인 시 캐시 폴백.
+const CACHE = "calc-app-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -25,19 +26,16 @@ self.addEventListener("activate", (e) => {
   );
 });
 
-// 캐시 우선, 없으면 네트워크 (오프라인에서도 앱 셸 동작)
+// 네트워크 우선: 온라인이면 최신을 받아 캐시 갱신, 실패(오프라인)하면 캐시 사용
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   e.respondWith(
-    caches.match(e.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(e.request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
-          return res;
-        })
-        .catch(() => cached);
-    })
+    fetch(e.request)
+      .then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
