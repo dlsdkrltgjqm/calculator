@@ -1,6 +1,6 @@
 // 앱 셸 캐시. 데이터는 IndexedDB에 저장되므로 캐시 대상이 아님.
 // 전략: 네트워크 우선(online이면 항상 최신) + 오프라인 시 캐시 폴백.
-const CACHE = "calc-app-v5";
+const CACHE = "calc-app-v6";
 const ASSETS = [
   "./",
   "./index.html",

@@ -556,7 +556,13 @@ function renderProjects() {
     li.innerHTML =
       `<span class="p-title">${escapeHtml(p.title)}</span>` +
       `<span class="p-count">계산 ${count}건</span>`;
-    li.addEventListener("click", () => { selectedProjectId = p.id; refreshAll(); });
+    li.addEventListener("click", () => {
+      // 같은 프로젝트를 다시 클릭하면 접기(토글)
+      selectedProjectId = selectedProjectId === p.id ? null : p.id;
+      editingUrlId = null;
+      urlAddingId = null;
+      refreshAll();
+    });
     projectListEl.appendChild(li);
   });
 }
