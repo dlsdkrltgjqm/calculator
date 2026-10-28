@@ -345,3 +345,22 @@ a.url-link:hover { text-decoration: underline; }
     padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
 }
+
+/* ===== 전체 데이터 초기화 ===== */
+.app-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+.reset-all {
+  border: 1px solid #7f1d1d;
+  background: transparent;
+  color: #fca5a5;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.reset-all:hover { background: #7f1d1d; color: #fee2e2; }

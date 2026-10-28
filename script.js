@@ -20,6 +20,7 @@ const newProjectTitle = document.getElementById("newProjectTitle");
 const createProjectBtn = document.getElementById("createProject");
 const cancelProjectBtn = document.getElementById("cancelProject");
 const tabButtons = document.querySelectorAll(".tab");
+const resetAllBtn = document.getElementById("resetAll");
 
 // ===== 상태 =====
 const HIST_KEY = "calc-history";
@@ -254,6 +255,28 @@ function clearHistory() {
   editingId = null;
   selected.clear();
   saveHistory();
+  refreshAll();
+}
+
+// 모든 데이터(계산 내역 + 프로젝트) 초기화
+function clearAllData() {
+  if (!confirm("모든 계산 내역과 프로젝트를 삭제합니다.\n되돌릴 수 없습니다. 계속할까요?")) return;
+  history = [];
+  projects = [];
+  selected.clear();
+  editingId = null;
+  editingUrlId = null;
+  urlAddingId = null;
+  selectedProjectId = null;
+  // 저장소 비우기 (IndexedDB + localStorage 폴백 모두)
+  if (db) {
+    dbReplaceAll(STORE_HISTORY, []).catch((e) => console.warn(e));
+    dbReplaceAll(STORE_PROJECTS, []).catch((e) => console.warn(e));
+  }
+  try { localStorage.removeItem(HIST_KEY); localStorage.removeItem(PROJ_KEY); } catch {}
+  switchView("calc");
+  current = "";
+  updateDisplay();
   refreshAll();
 }
 
@@ -641,6 +664,7 @@ document.querySelectorAll(".key").forEach((b) => {
 
 clearHistoryBtn.addEventListener("click", clearHistory);
 deleteSelectedBtn.addEventListener("click", deleteSelected);
+resetAllBtn.addEventListener("click", clearAllData);
 assignProjectBtn.addEventListener("click", () => {
   if (assignPanel.hidden) openAssignPanel(); else assignPanel.hidden = true;
 });
